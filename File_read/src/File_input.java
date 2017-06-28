@@ -4,28 +4,35 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-/**
-  * 
-  * 该函数用于读取文件内容，并转换成数组返回
-  * @parm fobj,传入的文件参数
-  * @return 
-  * @author huarui
-  * @createdate 20170627
-  */
 public class File_input {
-
+	/**
+	  * 
+	  * 该函数用于读取文件内容，并转换成数组返回
+	  * @param fobj,传入的文件参数
+	  * @param file_read,返回的字节数组
+	  * @return file_read
+	  * @author huarui
+	  * @createdate 20170627
+	  */
 	public static byte[] file2buf(File fobj){
 		
-		byte[] file_read = null ;
+		byte[] file_read = null;
 		try{
-//			if(!fobj.exists()){
-//				return file_read;
-//			}
             FileInputStream fis = new FileInputStream(fobj);  
+            int file_size = (int) fobj.length();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(file_size);
+            int i;
+            byte[] b = new byte[file_size];
+            while((i = fis.read(b)) != -1){
+            	baos.write(b,0,i);
+            }
+            fis.close();
+            baos.close();
+            file_read = baos.toByteArray();
             
 		}catch(FileNotFoundException e){
 			System.out.println("文件未找到");
-			return file_read;						
+			return null;						
 		}catch (IOException e) {  
             e.printStackTrace();  
         }  

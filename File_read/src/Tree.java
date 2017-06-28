@@ -13,7 +13,10 @@ public class Tree {
 	
 	
 	
-	//初始化树
+	/**
+	 * 
+	 * @param tn,传入的空树
+	 */
 	public void InitTree(TNode tn){
 		if(tn.value<50){
 			TNode t1 = new TNode();
@@ -34,10 +37,8 @@ public class Tree {
 	public static void TreeLevel(TNode tree, int n){
 		
 		if(tree == null || n <= 0) return;
-		Queue<TNode> q=new LinkedList<TNode>();
-		q.add(tree);
 		if(n == 1){
-			System.out.print(tree.value);
+			System.out.println(tree.value + " ");
 		}else{
 			TreeLevel(tree.left,n-1);
 			TreeLevel(tree.right,n-1);
