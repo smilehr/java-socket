@@ -41,6 +41,7 @@ public class InttoOther {
 				}
 			}		
 		}
+		
 		//处理输入的整数为非负数的情况
 		else{
 			for(i = 31;i>=0;i--){
