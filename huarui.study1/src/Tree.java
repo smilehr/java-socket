@@ -33,15 +33,19 @@ public class Tree {
 		}
 	}
 	
-	//遍历方法
+	/**
+	 * 功能：以层序遍历的方式，从左到右依次读取出第n层的所有节点
+	 * @param tree
+	 * @param n
+	 */
 	public static void TreeLevel(TNode tree, int n){
 		
 		if(tree == null || n <= 0) return;
 		if(n == 1){
-			System.out.println(tree.value + " ");
+			System.out.print(tree.value + " ");
 		}else{
-			TreeLevel(tree.left,n-1);
-			TreeLevel(tree.right,n-1);
+			TreeLevel(tree.left,n-1);	//遍历左子树
+			TreeLevel(tree.right,n-1);	//遍历右子树
 		}
 	}
 }

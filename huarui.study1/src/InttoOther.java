@@ -30,7 +30,7 @@ public class InttoOther {
 					obj1 = obj1 /2;
 				}			
 			}
-			//以二进制的算法将反码+1
+			//以二进制的算法将反码+1得到补码
 			for(i=31;i>=0;i--){	
 				sum = int_hex[i] + 1;
 				if(sum == 2){
@@ -57,6 +57,7 @@ public class InttoOther {
 		for(i = 0;i<32;i+=4){
 			sum = int_hex[i+3] + int_hex[i+2]*2 + int_hex[i+1]*2*2 + int_hex[i]*2*2*2;
 			if(sum == 0 && hex.length()==0) continue;	//进行首位去0处理
+			//字符串拼接
 			switch (sum) {
 				case 10: 
 					hex.append("a");

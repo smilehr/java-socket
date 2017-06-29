@@ -18,9 +18,9 @@ public class File_input {
 		
 		byte[] file_read = null;
 		try{
-            FileInputStream fis = new FileInputStream(fobj);  
-            int file_size = (int) fobj.length();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream(file_size);
+            FileInputStream fis = new FileInputStream(fobj);	//文件读取流
+            int file_size = (int) fobj.length();	//设置byte数组大小
+            ByteArrayOutputStream baos = new ByteArrayOutputStream(file_size);	//字节输出流
             int i;
             byte[] b = new byte[file_size];
             while((i = fis.read(b)) != -1){
