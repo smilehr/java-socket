@@ -6,7 +6,7 @@ import java.io.IOException;
  * 培训第一题，文件操作
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>succez</p>
- * @author Hr
+ * @author Huarui
  * @createdate 2017年6月29日
  */
 public class File_input {
