@@ -10,7 +10,7 @@ public class IntToOther {
 	/**
 	 * 字符数组，二进制转16进制时进行数值转换
 	 */
-	private final static char[] key_hex = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
+	private final static char[] KEY_HEX = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
 			'f' };
 
 	/**
@@ -89,7 +89,7 @@ public class IntToOther {
 				continue; //进行首位去0处理
 			}
 			//字符串拼接
-			hex.append(key_hex[sum]);
+			hex.append(KEY_HEX[sum]);
 		}
 		return hex;
 	}
