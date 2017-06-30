@@ -3,7 +3,7 @@
  * 完成培训第二题
  * <p>Copyright: Copyright (c) 2017</p>
  * <p>succez</p>
- * @author Hr
+ * @author HuaRui
  * @createdate 2017年6月29日
  */
 import java.util.Random;
