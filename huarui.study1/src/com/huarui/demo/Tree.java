@@ -9,7 +9,7 @@ import com.huaui.test.TreeTest.TNode;
  * @author huarui
  * @createdate 2017年7月3日
  */
-public class Tree {
+public class Tree { 
 
 	/**
 	 * 对传入的参数进行判断处理
