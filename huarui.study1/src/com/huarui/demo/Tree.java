@@ -26,7 +26,7 @@ public class Tree {
 			return null;
 		}
 		StringBuilder str = new StringBuilder();
-		return treeLevel1(tree, n, str).toString(); //递归遍历
+		return treeLevel(tree, n, str).toString(); //递归遍历
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class Tree {
 	 * @param n，遍历二叉树的层数
 	 * @param str,存储遍历的节点value
 	 */
-	private static StringBuilder treeLevel1(TNode tree, int n, StringBuilder str) {
+	private static StringBuilder treeLevel(TNode tree, int n, StringBuilder str) {
 		if (tree == null) {
 			return str;
 		}
@@ -44,8 +44,8 @@ public class Tree {
 			str.append(tree.value);
 		}
 		else {
-			str = treeLevel1(tree.left, n - 1, str); //遍历左子树
-			str = treeLevel1(tree.right, n - 1, str); //遍历右子树
+			str = treeLevel(tree.left, n - 1, str); //遍历左子树
+			str = treeLevel(tree.right, n - 1, str); //遍历右子树
 		}
 		return str;
 	}
