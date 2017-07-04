@@ -21,7 +21,6 @@ public class FileRead {
 	  * @throws IOException 
 	  */
 	public static byte[] file2buf(File fobj) throws IOException {
-		byte[] file_read = null;
 		if (!fobj.exists()) {
 			System.out.println("文件不存在！");
 			return null;
@@ -35,25 +34,26 @@ public class FileRead {
 			return null;
 		}
 		FileInputStream fis = null;
+		int file_size = (int) fobj.length(); //根据文件大小设置byte数组大小
+		byte[] file_read = new byte[file_size];
+		int off = 0;
+		int len = 0;
+		int rest = 0 ;
 		try {
-			fis = new FileInputStream(fobj);//文件读取流
-			int file_size = (int) fobj.length(); //根据文件大小设置byte数组大小
-			file_read = new byte[file_size];
-			int dev = 0;
-			int total = 0;
-			while (dev < file_size
-					&& (total = fis.read(file_read, dev, file_size - dev > 4096 ? 4096 : file_size - dev)) != -1) {
-				dev += total;
+			fis = new FileInputStream(fobj);//文件读取流									
+			while (off < file_size && (len = fis.read(file_read, off, rest)) != -1) {
+				off += len;
+				rest = file_size - off > 4096 ? 4096 : file_size - off;
 			}
+			return file_read;
 		}
 		catch (IOException e) {
-			e.printStackTrace();
+			return null;
 		}
 		finally {
 			if (fis != null) {
 				fis.close();
 			}
 		}
-		return file_read;
 	}
 }
