@@ -89,7 +89,7 @@ public class IntToOther {
 		else {
 			bytes = posIntToBinary(obj, bytes);
 		}
-		//将byte数组int_hex转换成字符串hex
+		//将byte数组bytes转换成字符串hex
 		for (int i = 0; i < 8; i++) {
 			if (bytes[i] == 0 && hex.length() == 0) {
 				if(i == 7){
