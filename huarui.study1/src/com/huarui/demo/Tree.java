@@ -13,10 +13,10 @@ public class Tree {
 
 	/**
 	 * 对传入的参数进行判断处理
-	 * @param tree
-	 * @param n
+	 * @param tree，传入的二叉树
+	 * @param n，遍历二叉树的层数
 	 */
-	public static StringBuilder treeLevel(TNode tree, int n, StringBuilder str) {
+	public static String treeLevel(TNode tree, int n) {
 		if (tree == null) {
 			System.out.println("输入的树为空！");
 			return null;
@@ -25,7 +25,8 @@ public class Tree {
 			System.out.println("输入的层数不符合要求！");
 			return null;
 		}
-		return treeLevel1(tree, n, str); //递归遍历
+		StringBuilder str = new StringBuilder();
+		return treeLevel1(tree, n, str).toString(); //递归遍历
 	}
 
 	/**
@@ -33,6 +34,7 @@ public class Tree {
 	 * 如果n大于树的深度，则输出为空
 	 * @param tree 传入的二叉树
 	 * @param n，遍历二叉树的层数
+	 * @param str,存储遍历的节点value
 	 */
 	private static StringBuilder treeLevel1(TNode tree, int n, StringBuilder str) {
 		if (tree == null) {
