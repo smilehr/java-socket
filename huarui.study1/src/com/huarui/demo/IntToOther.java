@@ -10,7 +10,7 @@ package com.huarui.demo;
 public class IntToOther {
 
 	/**
-	 * 字符数组，二进制转16进制时进行数值转换
+	 * 字符数组，byte数组转换为字符串媒介
 	 */
 	private final static char[] HEX_CHARS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e',
 			'f' };
@@ -61,7 +61,7 @@ public class IntToOther {
 	}
 
 	/**
-	  * 将整数转换成十六进制字符串
+	  * 将整数转换成十六进制，并返回字符串
 	  * @param bytes，存放obj转换的十六进制数值
 	  * @param obj,传入的整数数值
 	  * @param hex，转换好的十六进制字符串
@@ -76,22 +76,21 @@ public class IntToOther {
 	public String intToHex(int obj) {
 
 		StringBuilder hex = new StringBuilder(8);
-		//当传入的十进制数为负数的情况
+		//当传入的十进制数为int最小值的情况
 		if (obj == Integer.MIN_VALUE) {
 			hex.append("80000000");
 			return hex.toString();
 		}
 		byte[] bytes = new byte[8];
-		//获取整数转换成二进制后的数组
+		//获取整数转换成16进制后的byte数组
 		if (obj < 0) {
 			bytes = negIntToBinary(Math.abs(obj), bytes);
 		}
 		else {
 			bytes = posIntToBinary(obj, bytes);
 		}
-		//将二进制数组int_hex转换成十六进制字符串hex
+		//将byte数组int_hex转换成字符串hex
 		for (int i = 0; i < 8; i++) {
-//			System.out.print(bytes[i]);
 			if (bytes[i] == 0 && hex.length() == 0) {
 				if(i == 7){
 					hex.append('0');
