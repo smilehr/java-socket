@@ -86,6 +86,14 @@ public class FileReadTest extends TestCase {
 		fis_txt1 = creatFile(path_txt1, "GBK", "测试用例2！");
 		Assert.assertNotEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));
 		
+		//不同内容相同编码
+		fis_txt = creatFile(path_txt, "utf-8", "测试用例2！");
+		fis_txt1 = creatFile(path_txt1, "utf-8", "测试用例23！");
+		Assert.assertNotEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));
+		//不同内容不同编码
+		fis_txt1 = creatFile(path_txt1, "GBK", "测试用例23！");
+		Assert.assertNotEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));				
+		
 		//相同内容相同编码不同扩展名
 		fis_txt = creatFile(path_txt, "utf-8", "测试用例3！");		
 		Assert.assertArrayEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_mp3));
