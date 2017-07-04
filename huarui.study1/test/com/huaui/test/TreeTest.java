@@ -32,10 +32,9 @@ public class TreeTest extends TestCase {
 	/**
 	 * 功能：初始化树的结构
 	 * @param tn,传入的空树
-	 * @param r,随机判断是否生成子树
 	 */
 	public void InitTree(TNode tn) {
-		if (tn.value < 50) {
+		if (tn.value < 20) {
 			TNode t1 = new TNode();
 			TNode t2 = new TNode();
 
@@ -52,15 +51,42 @@ public class TreeTest extends TestCase {
 			tn.right = null;
 		}
 	}
-
+	
+	/**
+	 * 测试树的遍历
+	 * @param tree,测试用生成的树,结构为
+	 * <pre>
+	 * 						 			1
+	 * 				      		2					  3
+	 * 			     4	              5 		6   	    7
+	 * 	 	    8          9      10    11   12    13    14    15
+	 * 		16    17   18    19 20 21 22 23 24 25 26 27 28 29 30 31
+	 *    32 33 34 35 36 37 38 39
+	 * </pre>
+	 */
 	@Test
 	public void testTreeLevel() {
 		TNode tree = new TNode();
 		tree.value = 1;
 		InitTree(tree);
-		StringBuilder str = new StringBuilder();
-		assertEquals("23", Tree.treeLevel(tree, 2, str).toString());
-		assertEquals("4567", Tree.treeLevel(tree, 3, str).toString());
+		TNode tree1 = null;
+		//树不为空且层数大于0小于树的高度
+		assertEquals("23", Tree.treeLevel(tree, 2));
+		
+		//树不为空且层数大于0小于树的高度
+		assertEquals("1", Tree.treeLevel(tree, 1));
+		
+		//树不为空且层数等于树的高度
+		assertEquals("3233343536373839", Tree.treeLevel(tree, 6));
+		
+		//树不为空，层数为0
+		assertEquals(null, Tree.treeLevel(tree, 0));
+		
+		//树不为空且层数大于树的高度
+		assertEquals("", Tree.treeLevel(tree, 8));
+		
+		//树为空
+		assertEquals(null, Tree.treeLevel(tree1, 3));
 	}
 
 }
