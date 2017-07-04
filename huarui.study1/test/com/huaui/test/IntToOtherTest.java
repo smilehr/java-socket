@@ -14,18 +14,13 @@ import com.huarui.demo.IntToOther;
 public class IntToOtherTest {
 	IntToOther ito = new IntToOther();
 
-	StringBuilder res = ito.intToHex(4);
-	StringBuilder res2 = ito.intToHex(-2147483648);
-	StringBuilder res3 = ito.intToHex(2147483647);
-	StringBuilder res4 = ito.intToHex(0);
-	StringBuilder res5 = ito.intToHex(-3);
-
 	@Test
 	public void testIntToHex() {
-		assertEquals(res.toString(), Integer.toHexString(4));
-		assertEquals(res2.toString(), Integer.toHexString(-2147483648));
-		assertEquals(res3.toString(), Integer.toHexString(2147483647));
-		assertEquals(res4.toString(),  Integer.toHexString(0));
-		assertEquals(res5.toString(),  Integer.toHexString(-3));
+		assertEquals(ito.intToHex(4), Integer.toHexString(4));
+		assertEquals(ito.intToHex(Integer.MIN_VALUE), Integer.toHexString(Integer.MIN_VALUE));
+		assertEquals(ito.intToHex(Integer.MAX_VALUE), Integer.toHexString(Integer.MAX_VALUE));
+		assertEquals(ito.intToHex(0),  Integer.toHexString(0));
+		assertEquals(ito.intToHex(-0),  Integer.toHexString(-0));
+		assertEquals(ito.intToHex(-3),  Integer.toHexString(-3));
 	}
 }
