@@ -19,8 +19,8 @@ public class IntToOtherTest {
 		assertEquals(ito.intToHex(4), Integer.toHexString(4));
 		assertEquals(ito.intToHex(Integer.MIN_VALUE), Integer.toHexString(Integer.MIN_VALUE));
 		assertEquals(ito.intToHex(Integer.MAX_VALUE), Integer.toHexString(Integer.MAX_VALUE));
-		assertEquals(ito.intToHex(0),  Integer.toHexString(0));
-		assertEquals(ito.intToHex(-0),  Integer.toHexString(-0));
-		assertEquals(ito.intToHex(-3),  Integer.toHexString(-3));
+		assertEquals(ito.intToHex(0), Integer.toHexString(0));
+		assertEquals(ito.intToHex(-0), Integer.toHexString(-0));
+		assertEquals(ito.intToHex(-3), Integer.toHexString(-3));
 	}
 }
