@@ -16,51 +16,6 @@ public class IntToOther {
 			'f' };
 
 	/**
-	 * 将负整数转换成byte数组
-	 * @param obj,传入的整数数
-	 * @param bytes[] 返回的byte数组
-	 * @return
-	 */
-	public static byte[] negIntToBinary(int obj, byte[] bytes) {
-		int rem;
-		boolean isCarry = true;
-		for (int i = 7; i >= 0; i--) {
-			rem = obj % 16;
-			bytes[i] = (byte) (rem ^ 0xF);
-			obj >>= 4;
-			if(isCarry){
-				if(bytes[i] == 15){
-					bytes[i] = 0;
-				}
-				else{
-					bytes[i]++;
-					isCarry = false;
-				}
-			}			
-		}
-		return bytes;
-	}
-
-	/**
-	 * 将正整数转换为byte数组
-	 * @param obj,传入的整数
-	 * @param bytes[] 返回的二进制数组
-	 * @return
-	 */
-	private static byte[] posIntToBinary(int obj, byte[] bytes) {
-		for (int i = 7; i >= 0; i--) {
-			if (obj == 0) {
-				bytes[i] = 0;
-			}
-			else {
-				bytes[i] = (byte) (obj % 16);
-				obj = obj >> 4;
-			}
-		}
-		return bytes;
-	}
-
-	/**
 	  * 将整数转换成十六进制，并返回字符串
 	  * @param bytes，存放obj转换的十六进制数值
 	  * @param obj,传入的整数数值
@@ -75,27 +30,54 @@ public class IntToOther {
 	  */
 	public String intToHex(int obj) {
 
-		StringBuilder hex = new StringBuilder(8);
 		//当传入的十进制数为int最小值的情况
 		if (obj == Integer.MIN_VALUE) {
-			hex.append("80000000");
-			return hex.toString();
+			return "80000000";
 		}
+		//当传入的十进制数为0
+		if (obj == 0) {
+			return "0";
+		}
+		StringBuilder hex = new StringBuilder(8);
 		byte[] bytes = new byte[8];
 		//获取整数转换成16进制后的byte数组
 		if (obj < 0) {
-			bytes = negIntToBinary(Math.abs(obj), bytes);
+			obj = Math.abs(obj);
+			boolean isCarry = true;
+			for (int i = 7; i >= 0; i--) {
+				bytes[i] = (byte) ((obj & 0xF) ^ 0xF);
+				obj >>= 4;
+				if (isCarry) {
+					if (bytes[i] == 15) {
+						bytes[i] = 0;
+					}
+					else {
+						bytes[i]++;
+						isCarry = false;
+					}
+				}
+			}
 		}
 		else {
-			bytes = posIntToBinary(obj, bytes);
+			for (int i = 7; i >= 0; i--) {
+				if (obj == 0) {
+					bytes[i] = 0;
+				}
+				else {
+					bytes[i] = (byte) (obj & 0xF);
+					obj = obj >> 4;
+				}
+			}
 		}
 		//将byte数组bytes转换成字符串hex
+		boolean iscontinue = true;
 		for (int i = 0; i < 8; i++) {
-			if (bytes[i] == 0 && hex.length() == 0) {
-				if(i == 7){
-					hex.append('0');
-				}
-				continue; //进行首位去0处理
+			if (bytes[i] > 0) {
+				iscontinue = false;
+			}
+			//进行首位去0处理
+			if (bytes[i] == 0 && iscontinue) {
+				continue; 
 			}
 			//字符串拼接
 			hex.append(HEX_CHARS[bytes[i]]);
