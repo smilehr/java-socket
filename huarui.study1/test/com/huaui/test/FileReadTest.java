@@ -23,10 +23,74 @@ import junit.framework.TestCase;
  */
 public class FileReadTest extends TestCase {
 
-	FileRead fr = new FileRead();
+	@Test
+	public void testFile2buf() throws IOException {
+		//测试不同扩展名文件读取
+		File fis_pdf = creatFile("file_create/1.pdf", "utf-8", "测试用例utf-8！");
+		Assert.assertEquals("测试用例utf-8！", new String(FileRead.file2buf(fis_pdf), "utf-8"));
+
+		File fis_txt = creatFile("file_create/1.txt", "utf-8", "测试用例utf-8！");
+		Assert.assertEquals("测试用例utf-8！", new String(FileRead.file2buf(fis_txt), "utf-8"));
+
+		File fis_doc = creatFile("file_create/1.doc", "utf-8", "测试用例utf-8！");
+		Assert.assertEquals("测试用例utf-8！", new String(FileRead.file2buf(fis_doc), "utf-8"));
+
+		File fis_jpg = creatFile("file_create/1.jpg", "utf-8", "测试用例utf-8！");
+		Assert.assertEquals("测试用例utf-8！", new String(FileRead.file2buf(fis_jpg), "utf-8"));
+
+		File fis_mp3 = creatFile("file_create/1.mp3", "utf-8", "测试用例utf-8！");
+		Assert.assertEquals("测试用例utf-8！", new String(FileRead.file2buf(fis_mp3), "utf-8"));
+
+		//测试相同内容不同编码
+		File fis_txt1 = creatFile("file_create/2.txt", "GBK", "测试用例utf-8！");
+		Assert.assertEquals(new String(FileRead.file2buf(fis_txt), "utf-8"),
+				new String(FileRead.file2buf(fis_txt1), "GBK"));
+
+		//测试不同内容相同编码
+		File fis_txt2 = creatFile("file_create/2.txt", "utf-8", "测试用例GBK！");
+		Assert.assertNotEquals(new String(FileRead.file2buf(fis_txt), "utf-8"),
+				new String(FileRead.file2buf(fis_txt2), "utf-8"));
+
+		//测试不同内容相同编码
+		fis_txt2 = creatFile("file_create/2.txt", "GBK", "测试用例GBK！");
+		Assert.assertNotEquals(new String(FileRead.file2buf(fis_txt), "utf-8"),
+				new String(FileRead.file2buf(fis_txt2), "GBK"));
+
+		//测试大文件
+		File big_file = new File("file_create/Foxmail.exe");
+		Assert.assertEquals(big_file.length(), FileRead.file2buf(big_file).length);
+
+	}
+
+	/**
+	 * 测试特殊情况
+	 * @throws IOException 
+	 */
+	@Test
+	public void testFlie2bufSpecial() throws IOException {
+		//测试参数为空的情况
+		File null_file = null;
+		Assert.assertArrayEquals(null, FileRead.file2buf(null_file));
+
+		//测试目录，非文件情况
+		File not_file = new File("file_create/");
+		Assert.assertArrayEquals(null, FileRead.file2buf(not_file));
+
+		//测试文件不存在的情况
+		File no_file = new File("file_create/4.txt");
+		Assert.assertArrayEquals(null, FileRead.file2buf(no_file));
+
+		//测试文件过大的情况
+		File eor_file = new File("D:\\Applications.rar");
+		Assert.assertArrayEquals(null, FileRead.file2buf(eor_file));
+	}
 
 	/**
 	 * 按照不同的文件扩展名创建文件
+	 * @param path,创建文件的路径
+	 * @param encoding,文件编码方式
+	 * @param content,文件内容
+	 * @return file
 	 * @throws IOException
 	 */
 	public File creatFile(String path, String encoding, String content) throws IOException {
@@ -56,63 +120,4 @@ public class FileReadTest extends TestCase {
 		return file;
 	}
 
-	@Test
-	public void testFile2buf() throws IOException {
-		File fis_txt = null;
-		File fis_txt1 = null;
-		File fis_mp3 = null;
-		String path_txt = "D:\\test.txt";
-		String path_txt1 = "D:\\test1.txt";
-		String path_mp3 = "D:\\test.mp3";
-		String path_pdf = "D:\\test.pdf";
-		String path_doc = "D:\\test.doc";
-		fis_txt = creatFile(path_txt, "utf-8", "测试用例1！");
-		fis_txt1 = creatFile(path_txt1, "utf-8", "测试用例1！");
-		fis_mp3 = creatFile(path_mp3, "utf-8", "测试用例3！");
-		
-		//测试不同扩展名文件读取
-		File fis_pdf = creatFile(path_pdf,"utf-8","测试用例！");
-		Assert.assertEquals(fis_pdf.length(), FileRead.file2buf(fis_pdf).length);
-		File fis_doc = creatFile(path_doc,"utf-8","测试用例！");
-		Assert.assertEquals(fis_pdf.length(), FileRead.file2buf(fis_doc).length);
-		Assert.assertEquals(fis_txt.length(), FileRead.file2buf(fis_txt).length);
-		Assert.assertEquals(fis_mp3.length(), FileRead.file2buf(fis_mp3).length);
-		//相同内容相同编码名字不同
-		
-		Assert.assertArrayEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));
-		
-		//相同内容不同编码
-		fis_txt = creatFile(path_txt, "utf-8", "测试用例2！");
-		fis_txt1 = creatFile(path_txt1, "GBK", "测试用例2！");
-		Assert.assertNotEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));
-		
-		//不同内容相同编码
-		fis_txt = creatFile(path_txt, "utf-8", "测试用例2！");
-		fis_txt1 = creatFile(path_txt1, "utf-8", "测试用例23！");
-		Assert.assertNotEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));
-		//不同内容不同编码
-		fis_txt1 = creatFile(path_txt1, "GBK", "测试用例23！");
-		Assert.assertNotEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_txt1));				
-		
-		//相同内容相同编码不同扩展名
-		fis_txt = creatFile(path_txt, "utf-8", "测试用例3！");		
-		Assert.assertArrayEquals(FileRead.file2buf(fis_txt), FileRead.file2buf(fis_mp3));
-		
-		//测试目录，非文件情况
-		File not_file = new File("D:\\");
-		Assert.assertArrayEquals(null, FileRead.file2buf(not_file));
-		
-		//测试大文件的情况
-		File big_file = new File("D:\\Office 2013(64位VOL版)+激活工具.rar");
-		Assert.assertEquals(big_file.length(), FileRead.file2buf(big_file).length);
-		
-		//测试文件不存在的情况
-		File no_file = new File("D:\\1.txt");
-		Assert.assertArrayEquals(null, FileRead.file2buf(no_file));
-		
-		//测试文件过大的情况
-		File eor_file = new File("D:\\Applications.rar");
-		Assert.assertArrayEquals(null, FileRead.file2buf(eor_file));
-		
-	}
 }
