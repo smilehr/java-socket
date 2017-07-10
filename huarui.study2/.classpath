@@ -2,7 +2,14 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="file"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Hr/Desktop/Json所需jar包/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hr/Desktop/Json所需jar包/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hr/Desktop/Json所需jar包/commons-lang-2.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hr/Desktop/Json所需jar包/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hr/Desktop/Json所需jar包/ezmorph-1.0.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Hr/Desktop/Json所需jar包/json-lib-2.2.3-jdk15.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

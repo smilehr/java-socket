@@ -1,0 +1,58 @@
+@charset "utf-8"
+
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div{margin:0;padding:0;border:0;} 
+body{background:#fff;color:#333;font-size:14px; margin-top:5px;font-family:"SimSun","宋体","Arial Narrow";} 
+
+ul,ol{list-style-type:none;} 
+select,input,img,select{vertical-align:middle;} 
+
+a{text-decoration:none;} 
+a:link{color:#009;} 
+a:visited{color:#800080;} 
+a:hover,a:active,a:focus{color:#c00;text-decoration:underline;}
+button {
+	border-radius: 2px;
+	background-color: rgb(189,190,232);
+	height: 32px;
+	width: 70px;
+}
+#header{
+	background: rgba(236,230,230,1);
+	margin-bottom: 10px;
+}
+
+#header p{
+	font-size: 30px;
+}
+#host_path{
+	height: 30px;
+	width: 20%;
+	border-radius: 5px 5px;
+}
+#left-menu{
+	width: 20%;
+	background: rgba(236,230,230,0.5);
+	float: left;
+	height: 500px;
+}
+
+#left-menu li{
+	font-size: 18px;
+	margin: 10px 0;
+	cursor:pointer;
+}
+#right-cont{
+	float: left;
+	height: 500px;
+	width: 80%
+}
+#file-cont{
+	width: 98%;
+	background-color: rgba(236,230,230,0.5);
+	height: 476px;
+	overflow: auto;
+}
+#file-cont-edit{
+	min-width: 99%;
+	min-height: 98%
+}
