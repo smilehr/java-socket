@@ -13,7 +13,7 @@ public class HttpServer {
 	public void await() {
 		ServerSocket serverSocket = null;
 		try {
-			serverSocket = new ServerSocket(9091, 1, InetAddress.getByName("127.0.0.1"));
+			serverSocket = new ServerSocket(8080, 1, InetAddress.getByName("127.0.0.1"));
 			System.out.println("httpServer running on port " + serverSocket.getLocalPort());
 		}
 		catch (Exception e) {
