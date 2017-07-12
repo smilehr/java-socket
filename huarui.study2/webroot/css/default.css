@@ -33,26 +33,45 @@ button {
 	width: 20%;
 	background: rgba(236,230,230,0.5);
 	float: left;
-	height: 500px;
+	height: 600px;
+	overflow: scroll;
 }
-
-#left-menu li{
+#left-menu ul{
+	padding-left: 10px;
+}
+#left-menu ul li{
 	font-size: 18px;
 	margin: 10px 0;
 	cursor:pointer;
+	float: left;
 }
+
+#left-menu ul img{
+	width: 10%;
+	height: 10%;
+	float: left;
+}
+
 #right-cont{
 	float: left;
-	height: 500px;
+	height: 600px;
 	width: 80%
 }
 #file-cont{
-	width: 98%;
-	background-color: rgba(236,230,230,0.5);
-	height: 476px;
-	overflow: auto;
+	width: 100%;
+/*	background-color: rgba(236,230,230,0.5); */
+	height: 600px;	
+}
+#btn-cotain button{
+	display: none;
 }
 #file-cont-edit{
 	min-width: 99%;
-	min-height: 98%
+	min-height: 98%;
+	overflow: auto;
+	display:none;
+}
+#pre_img{
+	width: 100%;
+	height: 95%;
 }

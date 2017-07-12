@@ -9,30 +9,27 @@
 </head>
 <body>
     <div id="header">
-        <p class="title">文件管理系统，当前目录为：<span id="path_span"></span></p> 
+        <p class="title">文件管理系统，当前目录为：<span id="path_span">D:</span></p> 
             <input type="text" name="host_path" id="host_path" placeholder="请输入要访问文件夹的根路径：">
             <button id="input_btn">确定</button>    
     </div>
     <div id="content">
         <div id="left-menu">
-            <ul>
-                <li>..返回上一级</li>
-                <li>目录一</li>
-                <li>目录一</li>
+            <ul id="left_ul">
+                <li id="li_back">..返回上一级</li>
+                <br>
             </ul>
         </div>
         <div id="right-cont">
-            <form>
                 <div id="btn-cotain">
-                    <button>保存</button>
-                    <button>下载</button>
+                    <button id="save">保存</button>
+                    <button id="download">下载</button>
                 </div>
                 <div id="file-cont">
                     <textarea id="file-cont-edit" placeholder="文档内容显示区域。。。。。。。。。">
                     </textarea>
                 </div>
             </div>
-        </form>
     </div>
 
     <script type="text/javascript" src="js/controller.js"></script>
