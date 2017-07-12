@@ -6,7 +6,16 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+
+import com.huarui.model.FileArray;
+import com.huarui.util.ShowFileServerlet;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 /**
  * 处理并发送http请求
@@ -56,10 +65,11 @@ public class Request implements Runnable {
 	 */
 	public void parse() throws Exception {
 		while (true) {
-			String line = br.readLine();
+			String line = br.readLine(); 
 			String method = line.substring(0, 4).trim();
 			OutputStream out = socket.getOutputStream();
-			this.requestPath = line.split(" ")[1];
+			//对请求url进行解码
+			this.requestPath = URLDecoder.decode(line.split(" ")[1],"UTF-8");
 			System.out.println(this.requestPath);
 			if ("GET".equalsIgnoreCase(method)) {
 				System.out.println("do get......");
@@ -70,11 +80,7 @@ public class Request implements Runnable {
 				this.doPost(br, out);
 			}
 			// 关闭套接字和流
-			try {
-				socket.close();
-			}
-			catch (Exception e) {
-			}
+			socket.close();
 		}
 	}
 
@@ -85,22 +91,51 @@ public class Request implements Runnable {
 	 * @throws Exception
 	 */
 	private void doGet(BufferedReader reader, OutputStream out) throws Exception {
+		//返回数据
+		if (this.requestPath.contains("ShowFileServlet")) {
+			int beginIndex = this.requestPath.indexOf('=') + 1;
+			String path = this.requestPath.substring(beginIndex).trim();
+			ShowFileServerlet sf = new ShowFileServerlet();
+			ArrayList<FileArray> list = sf.getFileServlet(path);
+			JSONArray json = JSONArray.fromObject(list);
+			System.out.println(json.toString());
+			String headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
+			out.write(headMessage.getBytes("utf-8"));
+			PrintStream pw = new PrintStream(out);
+			pw.print(json);
+			if (out != null) {
+				out.close();
+			}
+			if (reader != null) {
+				reader.close();
+			}
+			System.out.println("request complete.");
+
+		}
 		if (new File(WEB_ROOT + this.requestPath).exists()) {
 			//从服务器根目录下找到用户请求的文件并发送回浏览器  
 			InputStream fileIn = new FileInputStream(WEB_ROOT + this.requestPath);
 			byte[] buf = new byte[fileIn.available()];
 			fileIn.read(buf);
 			String headMessage = null;
-			if (this.requestPath.contains(".htm")) {
+			int beginIndex = this.requestPath.lastIndexOf('.');
+			String str = this.requestPath.substring(beginIndex);
+			if (str.equals(".html") || str.equals(".htm")) {
 				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/html\r\n" + "\r\n";
 			}
-			if (this.requestPath.contains(".css")) {
+			if (str.equals(".css")) {
 				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: text/css\r\n" + "\r\n";
 			}
-			if (this.requestPath.contains(".js")) {
+			if (str.equals(".js")) {
 				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: application/x-javascript\r\n" + "\r\n";
 			}
-			out.write(headMessage.getBytes());
+			if (str.equals(".jpg")) {
+				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: application/x-jpg\r\n" + "\r\n";
+			}
+			if (str.equals(".png")) {
+				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: image/png\r\n" + "\r\n";
+			}
+			out.write(headMessage.getBytes("UTF-8"));
 			out.write(buf);
 			if (out != null) {
 				out.close();
@@ -111,10 +146,35 @@ public class Request implements Runnable {
 			if (reader != null) {
 				reader.close();
 			}
-			System.out.println("request complete.");
 		}
+		if (new File(this.requestPath).exists() && new File(this.requestPath).isFile()) {
+			//从请求目录下找到用户请求的文件并发送回浏览器  
+			InputStream fileIn = new FileInputStream(this.requestPath);
+			byte[] buf = new byte[fileIn.available()];
+			fileIn.read(buf);
+			String headMessage = null;
+			int beginIndex = this.requestPath.lastIndexOf('.');
+			String str = this.requestPath.substring(beginIndex);
+			if (str.equals(".jpg")) {
+				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: application/x-jpg\r\n" + "\r\n";
+			}
+			if(str.equals(".js")){
+				headMessage = "HTTP/1.1 200 OK\r\n" + "Content-Type: application/x-javascript\r\n" + "\r\n";
+			}
+			out.write(headMessage.getBytes("UTF-8"));
+			out.write(buf);
+			if (out != null) {
+				out.close();
+			}
+			if (fileIn != null) {
+				fileIn.close();
+			}
+			if (reader != null) {
+				reader.close();
+			}
+		}
+		System.out.println("request complete.");
 	}
-
 	/**
 	 * 处理post请求  
 	 * @param reader
