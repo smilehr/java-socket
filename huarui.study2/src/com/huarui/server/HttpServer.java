@@ -1,6 +1,5 @@
 package com.huarui.server;
 
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -13,7 +12,7 @@ public class HttpServer {
 	public void await() {
 		ServerSocket serverSocket = null;
 		try {
-			serverSocket = new ServerSocket(8080, 1, InetAddress.getByName("127.0.0.1"));
+			serverSocket = new ServerSocket(8080);
 			System.out.println("httpServer running on port " + serverSocket.getLocalPort());
 		}
 		catch (Exception e) {

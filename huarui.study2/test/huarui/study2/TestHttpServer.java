@@ -1,7 +1,12 @@
 package huarui.study2;
 
+import java.io.IOException;
+
 import org.junit.Test;
+
 import com.huarui.server.HttpServer;
+import com.huarui.server.HtttServlet;
+import com.huarui.util.ShowFileServerlet;
 
 /**
  * 测HttpServer类
@@ -16,5 +21,18 @@ public class TestHttpServer {
 	public void testHttpServer() throws Exception {
 		HttpServer hs = new HttpServer();
 		hs.await();
+	}
+	
+	@Test
+	public void testGetFileServlet() throws IOException{
+		ShowFileServerlet fs =new ShowFileServerlet();
+		System.out.println(fs.getFileServlet("D:\\"));
+	}
+	
+	@Test
+	public void testHttpServerlet(){
+		HtttServlet m = new HtttServlet();
+		m.startWorkerThreads();
+		m.await();
 	}
 }
