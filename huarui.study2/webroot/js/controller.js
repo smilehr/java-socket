@@ -7,6 +7,9 @@ function $(id) {
 }
 /**
  * 动态创建li标签
+ *<pre>
+ *<li><img/><span></span></li>
+ *</pre>
  * @param {} fn
  */
 function addElementLi(id, txt, type) {
@@ -61,6 +64,39 @@ function createXMLHttp() {
 	}
 	return xmlHttp;
 }
+/* 封装ajax函数
+ 2  * @param {string}opt.method http连接的方式，包括POST和GET两种方式
+ 3  * @param {string}opt.url 发送请求的url
+ 4  * @param {boolean}opt.async 是否为异步请求，true为异步的，false为同步的
+ 5  * @param {object}opt.data 发送的参数，格式为对象类型
+ 6  * @param {function}opt.success ajax发送并接收成功调用的回调函数
+ 7  */
+function ajax(opt) {
+	// 处理传过来的opt对象
+	opt.method = opt.method.toUpperCase() || 'POST';
+	opt.url = opt.url || '';
+	opt.async = opt.async || true;
+	opt.data = opt.data || null;
+	opt.success = opt.success || function() {
+	};
+
+	var xmlHttp = createXMLHttp();
+	if (opt.method == "GET") {
+		var get_url = opt.url + opt.data;
+		xmlHttp.open(opt.method, get_url, opt.async);
+		xmlHttp.send();
+	}
+	if (opt.method == "POST") {
+		xmlHttp.open(opt.method, opt.url, opt.async);
+		xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=utf-8');
+		xmlHttp.send(opt.data);
+	}
+	xmlHttp.onreadystatechange = function() {
+		if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+			opt.success(xmlHttp.responseText);
+		}
+	}
+}
 /**
  * 初始化界面，默认根路径为d盘
  * @type 
@@ -68,21 +104,18 @@ function createXMLHttp() {
 function initPage() {
 	var span = $("path_span");
 	var path = span.innerHTML + "\\";
-	var xmlHttp = createXMLHttp();
-	var url = "/ShowFileServlet?path=" + path;
-	xmlHttp.open("GET", url, true);
-	xmlHttp.send();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4) {
-			if (xmlHttp.status == 200) {
-				var response = xmlHttp.responseText;
-				var jobj = eval(response);
-				for (var i = jobj.length - 1; i >= 0; i--) {
-					addElementLi("left_ul", jobj[i].path, jobj[i].type);
-				}
-			}
-		}
-	}
+	var ajax_url = "/ShowFileServlet?path=";
+	ajax({
+		    method : 'get',
+		    url : ajax_url,
+		    data : path,
+		    success : function(response) {
+			    var jobj = eval(response);
+			    for (var i = jobj.length - 1; i >= 0; i--) {
+				    addElementLi("left_ul", jobj[i].path, jobj[i].type);
+			    }
+		    }
+	    });
 }
 window.onload = initPage;
 /**
@@ -97,7 +130,6 @@ function getFile() {
 	var element = evt.srcElement || evt.target;
 	var tag = element.tagName;
 	var now_path = $("path_span").innerHTML;
-	var xmlHttp = createXMLHttp();
 	var path;
 	if (tag == "SPAN") {
 		path = now_path + "\\" + this.innerHTML;
@@ -106,53 +138,48 @@ function getFile() {
 		path = $("host_path").value;
 	}
 	var img_dom = $("file-cont").getElementsByTagName("img").length;
-	var xmlHttp = createXMLHttp();
-	var url = "/ShowFileServlet?path=" + encodeURI(path);
-	xmlHttp.open("GET", url, true);
-	xmlHttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded;charset=UTF-8');
-	xmlHttp.send();
-	xmlHttp.onreadystatechange = function() {
-		if (xmlHttp.readyState == 4) {
-			if (xmlHttp.status == 200) {
-				var response = xmlHttp.responseText;
-				var jobj = eval(response);
-				if (jobj[0].type != 6 && jobj.length == 1) {
-					if (jobj[0].type == 0) {
-						$("save").style.display = "inline";
-						if (jobj.content != "") {
-							$("file-cont-edit").style.display = "inline";
-							$("file-cont-edit").value = jobj[0].content;
-							$("file-cont-edit").title = jobj[0].path;
-							if (img_dom > 0) {
-								$("pre_img").parentNode.removeChild($("pre_img"));
-							}
-						}
-					}
-					if (jobj[0].type == 1) {
-						$("save").style.display = "none";
-						if ($("file-cont-edit").style.display == "inline") {
-							$("file-cont-edit").style.display = "none";
-						}
-						if (img_dom > 0) {
-							$("pre_img").parentNode.removeChild($("pre_img"));
-						}
-						addElementImg("file-cont", jobj[0].path);
-						$("file-cont-edit").style.display = "none";
-					}
-					$("download").style.display = "inline";
-				}
-				else {
-					deleteElementLi("left_ul");
-					$("path_span").innerHTML = path;
-					if (jobj[0].path != "") {
-						for (var i = jobj.length - 1; i >= 0; i--) {
-							addElementLi("left_ul", jobj[i].path, jobj[i].type);
-						}
-					}
-				}
-			}
-		}
-	}
+	ajax({
+		    method : 'get',
+		    url : '/ShowFileServlet?path=',
+		    data : encodeURI(path),
+		    success : function(response) {
+			    var jobj = eval(response);
+			    if (jobj[0].type != 6 && jobj.length == 1) {
+				    if (jobj[0].type == 0) {
+					    $("save").style.display = "inline";
+					    if (jobj.content != "") {
+						    $("file-cont-edit").style.display = "inline";
+						    $("file-cont-edit").value = jobj[0].content;
+						    $("file-cont-edit").title = jobj[0].path;
+						    if (img_dom > 0) {
+							    $("pre_img").parentNode.removeChild($("pre_img"));
+						    }
+					    }
+				    }
+				    if (jobj[0].type == 1) {
+					    $("save").style.display = "none";
+					    if ($("file-cont-edit").style.display == "inline") {
+						    $("file-cont-edit").style.display = "none";
+					    }
+					    if (img_dom > 0) {
+						    $("pre_img").parentNode.removeChild($("pre_img"));
+					    }
+					    addElementImg("file-cont", jobj[0].path);
+					    $("file-cont-edit").style.display = "none";
+				    }
+				    $("download").style.display = "inline";
+			    }
+			    else {
+				    deleteElementLi("left_ul");
+				    $("path_span").innerHTML = path;
+				    if (jobj[0].path != "") {
+					    for (var i = jobj.length - 1; i >= 0; i--) {
+						    addElementLi("left_ul", jobj[i].path, jobj[i].type);
+					    }
+				    }
+			    }
+		    }
+	    });
 }
 /**
  * 返回上一级目录
@@ -173,21 +200,18 @@ window.$("li_back").onclick = function() {
 		}
 		deleteElementLi("left_ul");
 		$("path_span").innerHTML = path;
-		var xmlHttp = createXMLHttp();
-		var url = "/ShowFileServlet?path=" + path + "\\";
-		xmlHttp.open("GET", url, true);
-		xmlHttp.send();
-		xmlHttp.onreadystatechange = function() {
-			if (xmlHttp.readyState == 4) {
-				if (xmlHttp.status == 200) {
-					var response = xmlHttp.responseText;
-					var jobj = eval(response);
-					for (var i = jobj.length - 1; i >= 0; i--) {
-						addElementLi("left_ul", jobj[i].path, jobj[i].type);
-					}
-				}
-			}
-		}
+		path = path + "\\";
+		ajax({
+			    method : 'get',
+			    url : '/ShowFileServlet?path=',
+			    data : encodeURI(path),
+			    success : function(response) {
+				    var jobj = eval(response);
+				    for (var i = jobj.length - 1; i >= 0; i--) {
+					    addElementLi("left_ul", jobj[i].path, jobj[i].type);
+				    }
+			    }
+		    });
 	}
 }
 /**
@@ -197,12 +221,12 @@ window.$("download").onclick = function() {
 	var l_img = $("file-cont").getElementsByTagName("img").length;
 	if (l_img == 1) {
 		var img_src = $("pre_img").src;
-		window.open(img_src);
+		window.open(img_src, "_parent");
 	}
-	var l_txt = $("file-cont").getElementsByTagName("textarea").length;
-	if (l_txt == 1) {
+	var l_txt = $("file-cont").getElementsByTagName("textarea")[0].style.display;
+	if (l_txt == "inline") {
 		var txt_src = $("file-cont-edit").title;
-		location.href = txt_src;
+		window.open(txt_src);
 	}
 }
 // 解决window.event.srcElement.tagName在火狐上的不兼容性
