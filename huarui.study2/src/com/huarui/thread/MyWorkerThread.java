@@ -13,25 +13,25 @@ import com.huarui.servlet.RequestServlet;
  * @author Hr
  * @createdate 2017年7月13日
  */
-public class WorkerThread extends Thread{
-	LinkedList<RequestServlet> taskQueue;
+public class MyWorkerThread extends Thread{
+	LinkedList<RequestServer> taskQueue;
 
-	public WorkerThread(LinkedList<RequestServlet> taskQueue) {
+	public MyWorkerThread(LinkedList<RequestServer> taskQueue) {
 		this.taskQueue = taskQueue;
 	}
 
-	public List<RequestServlet> getTaskQueue() {
+	public List<RequestServer> getTaskQueue() {
 		return taskQueue;
 	}
 
-	public void setTaskQueue(LinkedList<RequestServlet> taskQueue) {
+	public void setTaskQueue(LinkedList<RequestServer> taskQueue) {
 		this.taskQueue = taskQueue;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
-			RequestServlet task = null;
+			RequestServer task = null;
 			synchronized (taskQueue) {
 				if (taskQueue.isEmpty()) {
 					try {

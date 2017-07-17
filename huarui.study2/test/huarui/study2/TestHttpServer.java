@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import com.huarui.server.HttpServer;
 import com.huarui.server.HtttServlet;
+import com.huarui.servlet.MyHttpServlet;
 import com.huarui.util.ShowFileServerlet;
 
 /**
@@ -33,6 +34,12 @@ public class TestHttpServer {
 	public void testHttpServerlet(){
 		HtttServlet m = new HtttServlet();
 		m.startWorkerThreads();
+		m.await();
+	}
+	
+	@Test
+	public void testMyHttpServerlet(){
+		MyHttpServlet m = new MyHttpServlet();
 		m.await();
 	}
 }
