@@ -95,30 +95,16 @@ public class ResponseServlet implements Response {
 		byte[] buf = null;
 		DoServlet ds = new DoServlet();
 		if (url.contains("Servlet?")) {
-			JSONArray json = ds.doServlet(url,request.getParm());
-			buf = json.toString().getBytes("utf-8");
-			setHeadMessage(ds.getHead());
-			writeResonse(buf, output);
+			ds.doServlet(url,request.getParm(),output);
 		}
 		if (new File(WEB_ROOT + url).exists()) {
-			buf = ds.doFile(WEB_ROOT + url);
-			setHeadMessage(ds.getHead());
-			writeResonse(buf, output);
+			ds.doFile(WEB_ROOT + url, output);
 		}
 		if (new File(url).exists() && new File(url).isFile()) {
-			buf = ds.doLocalFile(url);
-			setHeadMessage(ds.getHead());
-			writeResonse(buf, output);
+			ds.doFile(url, output);
 		}	
 	}
 
 	private void doPost(OutputStream output2, RequestServlet request2) {
-
-	}
-	
-	private void writeResonse(byte[] buf, OutputStream output) throws IOException{
-		output.write(headMessage.getBytes("utf-8"));
-		output.write(buf);
-		System.out.println("resopnse complete.");
 	}
 }

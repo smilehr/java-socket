@@ -9,9 +9,6 @@ import java.net.Socket;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
-import com.huarui.server.RequestServer;
-import com.huarui.thread.WorkerThread;
 import com.huarui.util.CloseStream;
 
 /**
@@ -24,8 +21,6 @@ import com.huarui.util.CloseStream;
 public class MyHttpServlet {
 
 	int workerThreadCount = 5;
-
-	WorkerThread[] workerThread = new WorkerThread[workerThreadCount];
 
 	LinkedList<RequestServlet> taskQueue = new LinkedList<RequestServlet>();
 
@@ -73,12 +68,5 @@ public class MyHttpServlet {
 			}
 		}
 
-	}
-
-	public void startWorkerThreads() {
-		for (int i = 0; i < workerThreadCount; i++) {
-			workerThread[i] = new WorkerThread(taskQueue);
-			workerThread[i].start();
-		}
 	}
 }
