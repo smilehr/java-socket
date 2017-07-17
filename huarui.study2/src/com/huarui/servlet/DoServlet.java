@@ -1,5 +1,6 @@
 package com.huarui.servlet;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 
 import com.huarui.model.FileArray;
 import com.huarui.util.CloseStream;
+import com.huarui.util.DeleteFileServlet;
 import com.huarui.util.DownFileServlet;
 import com.huarui.util.ShowFileServerlet;
 
@@ -30,7 +32,7 @@ public class DoServlet {
 	public String getHead() {
 		return headMessage;
 	}
-	
+
 	public byte[] getBuf() {
 		return buf;
 	}
@@ -52,13 +54,28 @@ public class DoServlet {
 			String head = "HTTP/1.1 200 OK\r\n";
 			String type = "Content-Type: text/html\r\n" + "\r\n";
 			this.headMessage = head + type;
-			writeResonse(json.toString().getBytes("utf-8"), output);
+			writeResponse(json.toString().getBytes("utf-8"), output);
 		}
 
 		if (url.contains("DownFileServlet")) {
 			String path = parm;
 			DownFileServlet df = new DownFileServlet();
-			df.downLoad(path, output);			
+			df.downLoad(path, output);
+		}
+
+		if (url.contains("CreateFileServlet")) {
+			String path = parm;
+			DeleteFileServlet dlf = new DeleteFileServlet();
+			String head = "HTTP/1.1 200 OK\r\n";
+			String type = "Content-Type: text/html\r\n" + "\r\n";
+			this.headMessage = head + type;
+			boolean bool = dlf.deleteFile(new File(path));
+			if (bool) {
+				writeResponse("right".getBytes("utf-8"), output);
+			}
+			else {
+				writeResponse("error".getBytes("utf-8"), output);
+			}
 		}
 	}
 
@@ -89,7 +106,7 @@ public class DoServlet {
 				type = "Content-Type: image/png\r\n" + "\r\n";
 			}
 			this.headMessage = head + type;
-			writeResonse(buf, output);
+			writeResponse(buf, output);
 		}
 		catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -99,8 +116,8 @@ public class DoServlet {
 			CloseStream.close(fileIn);
 		}
 	}
-	
-	private void writeResonse(byte[] buf, OutputStream output) throws IOException{
+
+	private void writeResponse(byte[] buf, OutputStream output) throws IOException {
 		output.write(headMessage.getBytes("utf-8"));
 		output.write(buf);
 		output.flush();
