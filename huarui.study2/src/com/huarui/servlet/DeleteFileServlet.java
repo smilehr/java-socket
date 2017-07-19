@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 
 import com.huarui.intel.Response;
+import com.huarui.util.DeleteFileUtil;
 
 /**
  * 删除文件或文件夹
@@ -23,35 +24,14 @@ public class DeleteFileServlet {
 	 */
 	public Response deleteServlet(String path, Response response) throws UnsupportedEncodingException {
 		File file = new File(path);
+		DeleteFileUtil dfs = new DeleteFileUtil();
+		dfs.deleteFile(file);
+
 		String head = "HTTP/1.1 200 OK\r\n";
 		String type = "Content-Type: text/html\r\n" + "\r\n";
 		response.setHeadMessage(head);
 		response.setType(type);
-		deleteFile(file);
 		response.setReturnByte("ok".getBytes("utf-8"));
 		return response;
-	}
-
-	/**
-	 * 删除文件或文件夹
-	 * @param file，传入的文件参数
-	 * @return
-	 */
-	public void deleteFile(File file) {
-		if (file.exists()) {
-			if (file.isFile()) {
-				file.delete();
-			}
-			else if (file.isDirectory()) {
-				File[] files = file.listFiles();
-				for (int i = 0; i < files.length; i++) {
-					this.deleteFile(files[i]);
-				}
-				file.delete();
-			}
-		}
-		else {
-			System.out.println("所删除的文件不存在");
-		}
 	}
 }
