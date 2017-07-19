@@ -29,12 +29,19 @@ button {
 	width: 20%;
 	border-radius: 5px 5px;
 }
+#create_path{
+	height: 30px;
+	width: 20%;
+	border-radius: 5px 5px;
+	margin-left: 10px;
+}
 #left-menu{
 	width: 20%;
 	background: rgba(236,230,230,0.5);
 	float: left;
 	height: 600px;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
 #left-menu ul{
 	padding-left: 10px;
@@ -50,6 +57,15 @@ button {
 	width: 10%;
 	height: 10%;
 	float: left;
+}
+#left-menu ul span{
+	display: inline-block;
+	width: 60%;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+#left-menu ul a{
+	float: right;
 }
 
 #right-cont{
