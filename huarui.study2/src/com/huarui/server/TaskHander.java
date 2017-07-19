@@ -41,7 +41,7 @@ public class TaskHander implements Runnable {
 			Dispatcher dis = new Dispatcher();
 			Response response = new Response();
 			response = dis.dispatch(request, response);
-			if(response.getReturnByte() != null){			
+			if (response.getReturnByte() != null) {
 				SendMessageUtil.sendMessage(response, output);
 			}
 		}
