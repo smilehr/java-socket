@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import com.huarui.intel.Request;
 import com.huarui.intel.Response;
+import com.huarui.servlet.DownFileServlet;
 import com.huarui.servlet.InitPageServlet;
 import com.huarui.servlet.ShowFileServerlet;
 
@@ -29,6 +30,11 @@ public class Dispatcher {
 		if (url.equals("ShowFileServlet")) {
 			ShowFileServerlet sf = new ShowFileServerlet();
 			response = sf.getFileServlet(request.getParm(), response);
+		}
+		if (url.equals("DownFileServlet")) {
+			System.out.println(request.getParm());
+			DownFileServlet df = new DownFileServlet();
+			df.downLoad(request.getParm(), response);
 		}
 		return response;
 	}
