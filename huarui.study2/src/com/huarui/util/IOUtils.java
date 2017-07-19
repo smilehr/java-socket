@@ -32,7 +32,6 @@ public class IOUtils {
 					int endIndex = url.indexOf('?');
 					String parm = url.substring(endIndex + 1);
 					url = url.substring(1, endIndex);
-					System.out.println(url);
 					request.setUrl(url);
 					HashMap<String, String> hash = new HashMap<String, String>();
 					int index = 0;
