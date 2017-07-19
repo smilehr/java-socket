@@ -1,4 +1,5 @@
 package com.huarui.intel;
+
 /**
  * 定义response接口
  * <p>Copyright: Copyright (c) 2017</p>
@@ -6,15 +7,55 @@ package com.huarui.intel;
  * @author huarui
  * @createdate 2017年7月13日
  */
-public interface Response {
+public class Response {
 
-	public void setHeadMessage(String head);
-	
-	public void setBodyMessage(String body);
-	
-	public void setContentType(String type);
-	
-	public void setReByte(String returnByte);
-	
-	public void setFileLength(int length);
+	private String headMessage = "";
+
+	private String bodyMessage = "";
+
+	private String type = "";
+
+	private byte[] returnByte = null;
+
+	private int fileLength = 0;
+
+	public String getHeadMessage() {
+		return headMessage;
+	}
+
+	public void setHeadMessage(String headMessage) {
+		this.headMessage = headMessage;
+	}
+
+	public String getBodyMessage() {
+		return bodyMessage;
+	}
+
+	public void setBodyMessage(String bodyMessage) {
+		this.bodyMessage = bodyMessage;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public byte[] getReturnByte() {
+		return returnByte;
+	}
+
+	public void setReturnByte(byte[] rerurnByte) {
+		this.returnByte = rerurnByte;
+	}
+
+	public int getFileLength() {
+		return fileLength;
+	}
+
+	public void setFileLength(int fileLength) {
+		this.fileLength = fileLength;
+	}
 }
