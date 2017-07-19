@@ -3,6 +3,8 @@ package com.huarui.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.HashMap;
+
 import com.huarui.intel.Request;
 
 /**
@@ -27,11 +29,28 @@ public class IOUtils {
 				String url = URLDecoder.decode(line.split(" ")[1], "UTF-8");
 				request.setUrl(url);
 				if (url.contains("?")) {
-					int beginIndex = url.indexOf('=') + 1;
-					String parm = url.substring(beginIndex).trim();
-					request.setParm(parm);
 					int endIndex = url.indexOf('?');
-					request.setUrl(url.substring(1, endIndex));
+					String parm = url.substring(endIndex + 1);
+					url = url.substring(1, endIndex);
+					System.out.println(url);
+					request.setUrl(url);
+					HashMap<String, String> hash = new HashMap<String, String>();
+					int index = 0;
+					int beginIndex = 0;
+					while ((index = parm.indexOf('&')) != -1) {
+						beginIndex = parm.indexOf('=') + 1;
+						String key = parm.substring(0, beginIndex - 1);
+						String value = parm.substring(beginIndex, index);
+						hash.put(key, value);
+						parm = parm.substring(index + 1);
+					}
+					if (parm.indexOf('&') == -1) {
+						beginIndex = parm.indexOf('=') + 1;
+						String key = parm.substring(0, beginIndex - 1);
+						String value = parm.substring(beginIndex);
+						hash.put(key, value);
+					}
+					request.setParm(hash);
 				}
 			}
 			if (method.equals("POST")) {
@@ -59,7 +78,7 @@ public class IOUtils {
 						buf[size++] = (byte) c;
 					}
 					String parm = new String(buf, 0, size);
-					request.setParm(parm);
+					//					request.setParm(parm);
 					System.out.println("The data user posted: " + parm);
 				}
 			}
