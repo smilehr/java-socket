@@ -1,5 +1,7 @@
 package com.huarui.intel;
 
+import java.util.HashMap;
+
 /**
  * Request接口，实现头部解析
  * <p>Copyright: Copyright (c) 2017</p>
@@ -13,7 +15,7 @@ public class Request {
 
 	private String url = "index.html";
 
-	private String parm = null;
+	private HashMap<String,String> parm = null;
 
 	private int contentLength = 0;
 
@@ -33,11 +35,11 @@ public class Request {
 		this.url = url;
 	}
 
-	public String getParm() {
+	public HashMap<String,String> getParm() {
 		return parm;
 	}
 
-	public void setParm(String parm) {
+	public void setParm(HashMap<String,String> parm) {
 		this.parm = parm;
 	}
 
