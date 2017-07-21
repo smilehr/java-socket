@@ -19,43 +19,41 @@ public class Response {
 
 	private int fileLength = 0;
 
-	public String getHeadMessage() {
-		return headMessage;
+	public Response(String head, String body, String type, byte[] bt, int length) {
+		this.headMessage = head;
+		this.bodyMessage = body;
+		this.type = type;
+		this.returnByte = bt;
+		this.fileLength = length;
 	}
 
-	public void setHeadMessage(String headMessage) {
-		this.headMessage = headMessage;
+	public Response(String head, String type, byte[] bt) {
+		this.headMessage = head;
+		this.type = type;
+		this.returnByte = bt;
+	}
+
+	public Response() {
+
+	}
+
+	public String getHeadMessage() {
+		return headMessage;
 	}
 
 	public String getBodyMessage() {
 		return bodyMessage;
 	}
 
-	public void setBodyMessage(String bodyMessage) {
-		this.bodyMessage = bodyMessage;
-	}
-
 	public String getType() {
 		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public byte[] getReturnByte() {
 		return returnByte;
 	}
 
-	public void setReturnByte(byte[] rerurnByte) {
-		this.returnByte = rerurnByte;
-	}
-
 	public int getFileLength() {
 		return fileLength;
-	}
-
-	public void setFileLength(int fileLength) {
-		this.fileLength = fileLength;
 	}
 }

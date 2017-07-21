@@ -1,10 +1,6 @@
 package com.huarui.server;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.Socket;
 import com.huarui.intel.Request;
 import com.huarui.intel.Response;
@@ -23,33 +19,25 @@ public class TaskHander implements Runnable {
 
 	private Socket socket;
 
-	private InputStream input;
-
-	private OutputStream output;
-
 	public TaskHander(Socket socket) throws IOException {
 		this.socket = socket;
 	}
 
 	public void run() {
-		BufferedReader br = null;
 		try {
-			input = socket.getInputStream();
-			output = socket.getOutputStream();
-			br = new BufferedReader(new InputStreamReader(input));
-			Request request = IOUtils.parseRequest(br);
-			Dispatcher dis = new Dispatcher();
+			Request request;
+			request = IOUtils.parseRequest(socket);
 			Response response = new Response();
-			response = dis.dispatch(request, response);
+			response = Dispatcher.dispatch(request, response);
 			if (response.getReturnByte() != null) {
-				SendMessageUtil.sendMessage(response, output);
+				SendMessageUtil.sendMessage(response, socket);
 			}
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 		finally {
-			CloseStream.close(br, input, output, socket);
+			CloseStream.close(socket);
 		}
 	}
 }

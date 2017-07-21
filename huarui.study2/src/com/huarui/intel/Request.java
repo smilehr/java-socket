@@ -15,39 +15,45 @@ public class Request {
 
 	private String url = "index.html";
 
-	private HashMap<String,String> parm = null;
+	private HashMap<String, String> parm = null;
 
 	private int contentLength = 0;
 
-	public String getMethod() {
-		return method;
+	public Request(String method, String url, HashMap<String, String> parm, int length) {
+		this.method = method;
+		this.url = url;
+		this.parm = parm;
+		this.contentLength = length;
 	}
 
-	public void setMethod(String method) {
+	public Request(String method, String url, HashMap<String, String> parm) {
 		this.method = method;
+		this.url = url;
+		this.parm = parm;
+	}
+
+	public Request(String method, String url) {
+		this.method = method;
+		this.url = url;
+	}
+
+	public Request() {
+		this.url = "index.html";
+	}
+
+	public String getMethod() {
+		return method;
 	}
 
 	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public HashMap<String,String> getParm() {
+	public HashMap<String, String> getParm() {
 		return parm;
-	}
-
-	public void setParm(HashMap<String,String> parm) {
-		this.parm = parm;
 	}
 
 	public int getContentLength() {
 		return contentLength;
-	}
-
-	public void setContentLength(int contentLength) {
-		this.contentLength = contentLength;
 	}
 }

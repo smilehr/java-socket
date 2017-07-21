@@ -2,14 +2,13 @@ package com.huarui.server;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-
 import com.huarui.intel.Request;
 import com.huarui.intel.Response;
 import com.huarui.servlet.CreateFileServlet;
 import com.huarui.servlet.DeleteFileServlet;
 import com.huarui.servlet.DownFileServlet;
 import com.huarui.servlet.InitPageServlet;
+import com.huarui.servlet.ModifyFileServlet;
 import com.huarui.servlet.ShowFileServerlet;
 
 /**
@@ -23,29 +22,28 @@ public class Dispatcher {
 	//定义webroot目录
 	public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "webroot";
 
-	public Response dispatch(Request request, Response response) throws IOException {
-		HashMap<String, String> parm = request.getParm();
+	public static Response dispatch(Request request, Response response) throws IOException {
 		String url = request.getUrl();
 		if (new File(WEB_ROOT + url).exists()) {
-			return InitPageServlet.initPage(WEB_ROOT + url);
+			return InitPageServlet.initPage(WEB_ROOT + url, response);
 		}
 		if (new File(url).exists() && new File(url).isFile()) {
-			return InitPageServlet.initPage(url);
+			return InitPageServlet.initPage(url, response);
 		}
 		if (url.equals("ShowFileServlet")) {
-			ShowFileServerlet sf = new ShowFileServerlet();
-			return sf.getFileServlet(parm.get("path"), response);
+			return ShowFileServerlet.getFileServlet(request, response);
 		}
 		if (url.equals("DownFileServlet")) {
-			DownFileServlet df = new DownFileServlet();
-			return df.downLoad(parm.get("path"), response);
+			return DownFileServlet.downLoad(request, response);
 		}
 		if (url.equals("DeleteFileServlet")) {
-			DeleteFileServlet delete = new DeleteFileServlet();
-			return delete.deleteServlet(parm.get("path"), response);
+			return DeleteFileServlet.deleteServlet(request, response);
 		}
 		if (url.equals("CreateFileServlet")) {
-			return CreateFileServlet.createFile(parm.get("name"), parm.get("path"), response);
+			return CreateFileServlet.createFile(request, response);
+		}
+		if (url.equals("ModifyFileServlet")) {
+			return ModifyFileServlet.modifyServlet(request, response);
 		}
 		return response;
 	}

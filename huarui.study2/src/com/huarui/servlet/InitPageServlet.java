@@ -8,9 +8,8 @@ import com.huarui.util.CloseStream;
 
 public class InitPageServlet {
 
-	public static Response initPage(String url) {
+	public static Response initPage(String url, Response response) {
 		InputStream fileIn = null;
-		Response response = null;
 		byte[] buf = null;
 		try {
 			fileIn = new FileInputStream(url);
@@ -35,10 +34,7 @@ public class InitPageServlet {
 			if (str.equals(".png")) {
 				type = "Content-Type: image/png\r\n" + "\r\n";
 			}
-			response = new Response();
-			response.setHeadMessage(headMessage);
-			response.setType(type);
-			response.setReturnByte(buf);
+			response = new Response(headMessage, type, buf);
 		}
 		catch (IOException e) {
 			e.printStackTrace();

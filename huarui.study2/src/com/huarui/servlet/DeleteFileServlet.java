@@ -3,8 +3,9 @@ package com.huarui.servlet;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 
+import com.huarui.intel.Request;
 import com.huarui.intel.Response;
-import com.huarui.util.DeleteFileUtil;
+import com.huarui.util.FileUtils;
 
 /**
  * 删除文件或文件夹
@@ -22,16 +23,14 @@ public class DeleteFileServlet {
 	 * @return
 	 * @throws UnsupportedEncodingException
 	 */
-	public Response deleteServlet(String path, Response response) throws UnsupportedEncodingException {
+	public static Response deleteServlet(Request request, Response response) throws UnsupportedEncodingException {
+		String path = request.getParm().get("path");
 		File file = new File(path);
-		DeleteFileUtil dfs = new DeleteFileUtil();
-		dfs.deleteFile(file);
+		FileUtils.deleteFile(file);
 
 		String head = "HTTP/1.1 200 OK\r\n";
 		String type = "Content-Type: text/html\r\n" + "\r\n";
-		response.setHeadMessage(head);
-		response.setType(type);
-		response.setReturnByte("ok".getBytes("utf-8"));
+		response = new Response(head, type, "ok".getBytes("utf-8"));
 		return response;
 	}
 }
