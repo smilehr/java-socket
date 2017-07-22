@@ -20,7 +20,9 @@ public class ShowFileServerlet {
 		JSONArray json = FileUtils.showFile(path);
 		String head = "HTTP/1.1 200 OK\r\n";
 		String type = "Content-Type: text/html\r\n" + "\r\n";
-		response = new Response(head, type, json.toString().getBytes("utf-8"));
+		response.setHeadMessage(head);
+		response.setType(type);
+		response.setReturnByte(json.toString().getBytes("utf-8"));
 		return response;
 	}
 }

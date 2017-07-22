@@ -13,29 +13,31 @@ public class Response {
 
 	private String bodyMessage = "";
 
+	public void setHeadMessage(String headMessage) {
+		this.headMessage = headMessage;
+	}
+
+	public void setBodyMessage(String bodyMessage) {
+		this.bodyMessage = bodyMessage;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public void setReturnByte(byte[] returnByte) {
+		this.returnByte = returnByte;
+	}
+
+	public void setFileLength(int fileLength) {
+		this.fileLength = fileLength;
+	}
+
 	private String type = "";
 
 	private byte[] returnByte = null;
 
 	private int fileLength = 0;
-
-	public Response(String head, String body, String type, byte[] bt, int length) {
-		this.headMessage = head;
-		this.bodyMessage = body;
-		this.type = type;
-		this.returnByte = bt;
-		this.fileLength = length;
-	}
-
-	public Response(String head, String type, byte[] bt) {
-		this.headMessage = head;
-		this.type = type;
-		this.returnByte = bt;
-	}
-
-	public Response() {
-
-	}
 
 	public String getHeadMessage() {
 		return headMessage;

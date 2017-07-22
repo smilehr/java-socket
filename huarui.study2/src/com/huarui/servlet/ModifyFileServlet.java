@@ -23,7 +23,9 @@ public class ModifyFileServlet {
 		FileUtils.modifyFile(file, parm.get("content"));
 		String head = "HTTP/1.1 200 OK\r\n";
 		String type = "Content-Type: text/html\r\n" + "\r\n";
-		response = new Response(head, type, "ok".getBytes("utf-8"));
+		response.setHeadMessage(head);
+		response.setType(type);
+		response.setReturnByte("ok".getBytes());
 		return response;
 	}
 }

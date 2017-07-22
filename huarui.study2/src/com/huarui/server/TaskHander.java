@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.Socket;
 import com.huarui.intel.Request;
 import com.huarui.intel.Response;
-import com.huarui.util.CloseStream;
 import com.huarui.util.IOUtils;
 import com.huarui.util.SendMessageUtil;
 
@@ -28,7 +27,7 @@ public class TaskHander implements Runnable {
 			Request request;
 			request = IOUtils.parseRequest(socket);
 			Response response = new Response();
-			response = Dispatcher.dispatch(request, response);
+			response = Dispatcher.dispatch(request, response, socket);
 			if (response.getReturnByte() != null) {
 				SendMessageUtil.sendMessage(response, socket);
 			}
@@ -37,7 +36,7 @@ public class TaskHander implements Runnable {
 			e.printStackTrace();
 		}
 		finally {
-			CloseStream.close(socket);
+			IOUtils.close(socket);
 		}
 	}
 }

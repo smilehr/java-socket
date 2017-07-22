@@ -2,6 +2,8 @@ package com.huarui.server;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
+
 import com.huarui.intel.Request;
 import com.huarui.intel.Response;
 import com.huarui.servlet.CreateFileServlet;
@@ -22,7 +24,7 @@ public class Dispatcher {
 	//定义webroot目录
 	public static final String WEB_ROOT = System.getProperty("user.dir") + File.separator + "webroot";
 
-	public static Response dispatch(Request request, Response response) throws IOException {
+	public static Response dispatch(Request request, Response response, Socket socket) throws IOException {
 		String url = request.getUrl();
 		if (new File(WEB_ROOT + url).exists()) {
 			return InitPageServlet.initPage(WEB_ROOT + url, response);
@@ -34,7 +36,7 @@ public class Dispatcher {
 			return ShowFileServerlet.getFileServlet(request, response);
 		}
 		if (url.equals("DownFileServlet")) {
-			return DownFileServlet.downLoad(request, response);
+			return DownFileServlet.downLoad(request, response, socket);
 		}
 		if (url.equals("DeleteFileServlet")) {
 			return DeleteFileServlet.deleteServlet(request, response);

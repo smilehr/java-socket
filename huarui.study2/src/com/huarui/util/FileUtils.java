@@ -91,7 +91,7 @@ public class FileUtils {
 			e.printStackTrace();
 		}
 		finally {
-			CloseStream.close(fw, bw);
+			IOUtils.close(fw, bw);
 		}
 	}
 
@@ -221,14 +221,7 @@ public class FileUtils {
 			System.out.println("文件读取错误！");
 		}
 		finally {
-			try {
-				if (fis != null) {
-					fis.close();
-				}
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
+			IOUtils.close(fis);
 		}
 		return null;
 	}

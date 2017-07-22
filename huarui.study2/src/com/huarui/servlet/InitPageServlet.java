@@ -4,7 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import com.huarui.intel.Response;
-import com.huarui.util.CloseStream;
+import com.huarui.util.IOUtils;
 
 public class InitPageServlet {
 
@@ -34,13 +34,15 @@ public class InitPageServlet {
 			if (str.equals(".png")) {
 				type = "Content-Type: image/png\r\n" + "\r\n";
 			}
-			response = new Response(headMessage, type, buf);
+			response.setHeadMessage(headMessage);
+			response.setType(type);
+			response.setReturnByte(buf);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
 		finally {
-			CloseStream.close(fileIn);
+			IOUtils.close(fileIn);
 		}
 		return response;
 	}

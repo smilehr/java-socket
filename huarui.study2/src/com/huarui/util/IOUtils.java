@@ -1,6 +1,7 @@
 package com.huarui.util;
 
 import java.io.BufferedReader;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
@@ -129,4 +130,16 @@ public class IOUtils {
 		return new Request("POST", url, hash, contentLength);
 	}
 
+	public static void close(Closeable... closeables) {
+		if (closeables != null) {
+			for (Closeable closeable : closeables) {
+				try {
+					closeable.close();
+				}
+				catch (Exception ex) {
+					// 忽略  
+				}
+			}
+		}
+	}
 }

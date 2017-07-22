@@ -6,6 +6,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.huarui.util.IOUtils;
+
 /**
  * 创建http请求，监听8080端口
  * <p>Copyright: Copyright (c) 2017</p>
@@ -16,8 +18,9 @@ import java.util.concurrent.Executors;
 public class HttpServer {
 
 	public void await() {
+		ServerSocket serverSocket = null;
 		try {
-			ServerSocket serverSocket = new ServerSocket(8080);
+			serverSocket = new ServerSocket(8080);
 			Socket socket = null;
 			System.out.println("httpServer running on port " + serverSocket.getLocalPort());
 			ExecutorService es = Executors.newFixedThreadPool(5);
@@ -35,6 +38,9 @@ public class HttpServer {
 		}
 		catch (IOException e) {
 			e.printStackTrace();
+		}
+		finally{
+			IOUtils.close(serverSocket);
 		}
 	}
 }
